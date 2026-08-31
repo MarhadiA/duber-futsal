@@ -1,0 +1,29 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration {
+    public function up(): void
+    {
+        Schema::create('jerseys', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('student_id')->constrained()->onDelete('cascade');
+            $table->integer('height'); // Tinggi Badan (cm)
+            $table->integer('weight'); // Berat Badan (kg)
+            $table->string('size');    // Ukuran hasil kalkulasi (S, M, L, XL, dll)
+            $table->string('jersey_photo')->nullable(); // Foto / Mockup Jersey
+            $table->decimal('price', 12, 2);       // Total Harga
+            $table->decimal('paid_amount', 12, 2)->default(0); // Uang yang sudah dibayar
+            $table->enum('status', ['unpaid', 'partial', 'paid'])->default('unpaid');
+            $table->text('notes')->nullable();
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('jerseys');
+    }
+};
